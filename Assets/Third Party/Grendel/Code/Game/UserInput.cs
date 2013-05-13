@@ -2,104 +2,104 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UserInput : Singleton<UserInput> 
+public class UserInput<T> : Singleton<T> where T  : MonoBehaviour
 {
-    [System.Serializable]
-    public class KeyBinding
-    {
-        public string BindingName = "New Binding";
-        public KeyCode Key = KeyCode.A;
-        public KeyCode AltKey = KeyCode.B;
-        public bool Enabled = true;
-        public MouseButtons MouseButton = UserInput.MouseButtons.None;
-        public MouseButtons AltMouseButton = UserInput.MouseButtons.None;
-        public List<UserInput.KeyBinding> Conflicts = new List<UserInput.KeyBinding>(); //TODO: Figure out the most efficient way to update keybind conflicts
+//    [System.Serializable]
+//    public class GrendelKeyBinding
+//    {
+//        public string BindingName = "New Binding";
+//        public KeyCode Key = KeyCode.A;
+//        public KeyCode AltKey = KeyCode.B;
+//        public bool Enabled = true;
+//        public GrendelKeyBinding.MouseButtons MouseButton = UserInput.GrendelKeyBinding.MouseButtons.None;
+//        public GrendelKeyBinding.MouseButtons AltMouseButton = UserInput.GrendelKeyBinding.MouseButtons.None;
+//        public List<UserInput<T>.GrendelKeyBinding> Conflicts = new List<UserInput<T>.GrendelKeyBinding>(); //TODO: Figure out the most efficient way to update keybind conflicts
+//
+//        private bool mIsDown = false;
+//
+//        public GrendelKeyBinding(string bindingName, KeyCode key, KeyCode altKey, GrendelKeyBinding.MouseButtons mouseButton, GrendelKeyBinding.MouseButtons altMouseButton)
+//        {
+//            BindingName = bindingName;
+//            Key = key;
+//            AltKey = altKey;
+//            MouseButton = mouseButton;
+//            AltMouseButton = altMouseButton;
+//        }
+//
+//        public GrendelKeyBinding(string bindingName, KeyCode key, KeyCode altKey)
+//        {
+//            BindingName = bindingName;
+//            Key = key;
+//            AltKey = altKey;
+//            MouseButton = GrendelKeyBinding.MouseButtons.None;
+//            AltMouseButton = GrendelKeyBinding.MouseButtons.None;
+//        }
+//
+//        public bool IsDown
+//        {
+//            get
+//            {
+//                return mIsDown;
+//            }
+//            set
+//            {
+//                mIsDown = value;
+//            }
+//        }
+//    }
 
-        private bool mIsDown = false;
-
-        public KeyBinding(string bindingName, KeyCode key, KeyCode altKey, MouseButtons mouseButton, MouseButtons altMouseButton)
-        {
-            BindingName = bindingName;
-            Key = key;
-            AltKey = altKey;
-            MouseButton = mouseButton;
-            AltMouseButton = altMouseButton;
-        }
-
-        public KeyBinding(string bindingName, KeyCode key, KeyCode altKey)
-        {
-            BindingName = bindingName;
-            Key = key;
-            AltKey = altKey;
-            MouseButton = MouseButtons.None;
-            AltMouseButton = MouseButtons.None;
-        }
-
-        public bool IsDown
-        {
-            get
-            {
-                return mIsDown;
-            }
-            set
-            {
-                mIsDown = value;
-            }
-        }
-    }
-
-    public enum MouseButtons
-    {
-        None = 0,
-        One = 1,
-        Two,
-        Three,
-        Four,
-        Five,
-        Six,
-    }
+//    public enum GrendelKeyBinding.MouseButtons
+//    {
+//        None = 0,
+//        One = 1,
+//        Two,
+//        Three,
+//        Four,
+//        Five,
+//        Six,
+//    }
 
     public float MouseSensitivityVertical = 1f;
     public float MouseSensitivityHorizontal = 1f;
 
-    [HideInInspector]public KeyBinding MoveUp = new KeyBinding("Move Up", KeyCode.W, KeyCode.UpArrow, MouseButtons.None, MouseButtons.None);
-    [HideInInspector]public KeyBinding MoveDown = new KeyBinding("Move Down", KeyCode.S, KeyCode.DownArrow, MouseButtons.None, MouseButtons.None);
-    [HideInInspector]public KeyBinding MoveLeft = new KeyBinding("Move Left", KeyCode.A, KeyCode.LeftArrow, MouseButtons.None, MouseButtons.None);
-    [HideInInspector]public KeyBinding MoveRight = new KeyBinding("Move Right", KeyCode.D, KeyCode.RightArrow, MouseButtons.None, MouseButtons.None);
-    [HideInInspector]public KeyBinding Jump = new KeyBinding("Jump", KeyCode.Space, KeyCode.Return, MouseButtons.None, MouseButtons.None);
-    [HideInInspector]public KeyBinding Run = new KeyBinding("Run", KeyCode.LeftShift, KeyCode.RightShift, MouseButtons.None, MouseButtons.None);
-    [HideInInspector]public KeyBinding PrimaryFire = new KeyBinding("Primary Fire", KeyCode.None, KeyCode.None, MouseButtons.One, MouseButtons.None);
-    [HideInInspector]public KeyBinding SecondaryFire = new KeyBinding("Secondary Fire", KeyCode.None, KeyCode.None, MouseButtons.Two, MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding MoveUp = new GrendelKeyBinding("Move Up", KeyCode.W, KeyCode.UpArrow, GrendelKeyBinding.MouseButtons.None, GrendelKeyBinding.MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding MoveDown = new GrendelKeyBinding("Move Down", KeyCode.S, KeyCode.DownArrow, GrendelKeyBinding.MouseButtons.None, GrendelKeyBinding.MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding MoveLeft = new GrendelKeyBinding("Move Left", KeyCode.A, KeyCode.LeftArrow, GrendelKeyBinding.MouseButtons.None, GrendelKeyBinding.MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding MoveRight = new GrendelKeyBinding("Move Right", KeyCode.D, KeyCode.RightArrow, GrendelKeyBinding.MouseButtons.None, GrendelKeyBinding.MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding Jump = new GrendelKeyBinding("Jump", KeyCode.Space, KeyCode.Return, GrendelKeyBinding.MouseButtons.None, GrendelKeyBinding.MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding Run = new GrendelKeyBinding("Run", KeyCode.LeftShift, KeyCode.RightShift, GrendelKeyBinding.MouseButtons.None, GrendelKeyBinding.MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding PrimaryFire = new GrendelKeyBinding("Primary Fire", KeyCode.None, KeyCode.None, GrendelKeyBinding.MouseButtons.One, GrendelKeyBinding.MouseButtons.None);
+    [HideInInspector]public GrendelKeyBinding SecondaryFire = new GrendelKeyBinding("Secondary Fire", KeyCode.None, KeyCode.None, GrendelKeyBinding.MouseButtons.Two, GrendelKeyBinding.MouseButtons.None);
 
-    [HideInInspector]public List<KeyBinding> KeyBindings = new List<KeyBinding>();
+    [HideInInspector]public List<GrendelKeyBinding> KeyBindings = new List<GrendelKeyBinding>();
 
-    private Dictionary<KeyCode, List<KeyBinding>> mKeyBindingsDictionary = new Dictionary<KeyCode, List<KeyBinding>>();
-    private Dictionary<MouseButtons, List<KeyBinding>> mMouseBindingsDictionary = new Dictionary<MouseButtons, List<KeyBinding>>();
+    private Dictionary<KeyCode, List<GrendelKeyBinding>> mGrendelKeyBindingsDictionary = new Dictionary<KeyCode, List<GrendelKeyBinding>>();
+    private Dictionary<GrendelKeyBinding.MouseButtons, List<GrendelKeyBinding>> mMouseBindingsDictionary = new Dictionary<GrendelKeyBinding.MouseButtons, List<GrendelKeyBinding>>();
 
-    private List<KeyBinding> mKeysDown = new List<KeyBinding>();
+    private List<GrendelKeyBinding> mKeysDown = new List<GrendelKeyBinding>();
     
     // Use this for initialization
     private void Start ()
     {
-        GatherKeyBindings();
-        StoreKeyBindings();
+        GatherKeyBindings(this.GetType());
+        StoreGrendelKeyBindings();
         mKeysDown.Clear();
     }
 
-    //Find all the KeyBindings on UserInput
-    public void GatherKeyBindings()
+    //Find all the GrendelKeyBindings on UserInput
+    public void GatherKeyBindings(System.Type t)
     {
         KeyBindings.Clear();
 
-        System.Type myType = typeof(UserInput);
+        System.Type myType = t;
 
         System.Reflection.FieldInfo[] myField = myType.GetFields();
 
         for(int i = 0; i < myField.Length; i++)
         {
-            if(myField[i].FieldType == typeof(UserInput.KeyBinding))
+            if(myField[i].FieldType == typeof(GrendelKeyBinding))
             {
-                UserInput.KeyBinding binding = (UserInput.KeyBinding)myField[i].GetValue(this);
+                GrendelKeyBinding binding = (GrendelKeyBinding)myField[i].GetValue(this);
                 if (!KeyBindings.Contains(binding))
                 {
                     KeyBindings.Add(binding);
@@ -108,40 +108,40 @@ public class UserInput : Singleton<UserInput>
         }
     }
 
-    //Store all the KeyBindings for easy referencing
-    private void StoreKeyBindings()
+    //Store all the GrendelKeyBindings for easy referencing
+    private void StoreGrendelKeyBindings()
     {
-        foreach(KeyBinding binding in KeyBindings)
+        foreach(GrendelKeyBinding binding in KeyBindings)
         {
             if (binding.Key != KeyCode.None)
             {
-                if (!mKeyBindingsDictionary.ContainsKey(binding.Key))
+                if (!mGrendelKeyBindingsDictionary.ContainsKey(binding.Key))
                 {
-                    mKeyBindingsDictionary.Add(binding.Key, new List<KeyBinding>(){ binding } );
+                    mGrendelKeyBindingsDictionary.Add(binding.Key, new List<GrendelKeyBinding>(){ binding } );
                 }
                 else
                 {
-                    mKeyBindingsDictionary[binding.Key].Add(binding);
+                    mGrendelKeyBindingsDictionary[binding.Key].Add(binding);
                 }
             }
 
             if (binding.AltKey != KeyCode.None)
             {
-                if (!mKeyBindingsDictionary.ContainsKey(binding.AltKey))
+                if (!mGrendelKeyBindingsDictionary.ContainsKey(binding.AltKey))
                 {
-                    mKeyBindingsDictionary.Add(binding.AltKey, new List<KeyBinding>(){ binding });
+                    mGrendelKeyBindingsDictionary.Add(binding.AltKey, new List<GrendelKeyBinding>(){ binding });
                 }
                 else
                 {
-                    mKeyBindingsDictionary[binding.AltKey].Add(binding);
+                    mGrendelKeyBindingsDictionary[binding.AltKey].Add(binding);
                 }
             }
 
-            if (binding.MouseButton != MouseButtons.None)
+            if (binding.MouseButton != GrendelKeyBinding.MouseButtons.None)
             {
                 if (!mMouseBindingsDictionary.ContainsKey(binding.MouseButton))
                 {
-                    mMouseBindingsDictionary.Add(binding.MouseButton, new List<KeyBinding>(){ binding });
+                    mMouseBindingsDictionary.Add(binding.MouseButton, new List<GrendelKeyBinding>(){ binding });
                 }
                 else
                 {
@@ -149,11 +149,11 @@ public class UserInput : Singleton<UserInput>
                 }
             }
 
-            if (binding.AltMouseButton != MouseButtons.None)
+            if (binding.AltMouseButton != GrendelKeyBinding.MouseButtons.None)
             {
                 if (!mMouseBindingsDictionary.ContainsKey(binding.AltMouseButton))
                 {
-                    mMouseBindingsDictionary.Add(binding.AltMouseButton, new List<KeyBinding>(){ binding });
+                    mMouseBindingsDictionary.Add(binding.AltMouseButton, new List<GrendelKeyBinding>(){ binding });
                 }
                 else
                 {
@@ -191,7 +191,7 @@ public class UserInput : Singleton<UserInput>
             if(GameOptions.Instance.DebugMode){ Console.Instance.ToggleConsole(); }
         }
 
-        foreach(KeyBinding binding in mKeysDown)
+        foreach(GrendelKeyBinding binding in mKeysDown)
         {
             EventManager.Instance.Post(new UserInputKeyEvent(UserInputKeyEvent.TYPE.KEYHELD, binding, Vector3.zero, this));
         }
@@ -217,12 +217,12 @@ public class UserInput : Singleton<UserInput>
 
     private void ProcessKeycode(KeyCode code, UserInputKeyEvent.TYPE inputType)
     {
-        if (!mKeyBindingsDictionary.ContainsKey(code))
+        if (!mGrendelKeyBindingsDictionary.ContainsKey(code))
         {
             return;
         }
 
-        foreach(KeyBinding binding in mKeyBindingsDictionary[code])
+        foreach(GrendelKeyBinding binding in mGrendelKeyBindingsDictionary[code])
         {
             if (binding.Enabled)
             {
@@ -259,7 +259,7 @@ public class UserInput : Singleton<UserInput>
     /// <param name='enable'>
     /// Enable (true) / Disable (false).
     /// </param>
-    public void EnableBinding(KeyBinding binding, bool enable)
+    public void EnableBinding(GrendelKeyBinding binding, bool enable)
     {
         if(KeyBindings.Contains(binding))
         {
@@ -276,9 +276,9 @@ public class UserInput : Singleton<UserInput>
     /// <param name='enable'>
     /// Enable (true) / Disable (false).
     /// </param>
-    public void EnableBindings(KeyBinding[] bindings, bool enable)
+    public void EnableBindings(GrendelKeyBinding[] bindings, bool enable)
     {
-        foreach(KeyBinding binding in bindings)
+        foreach(GrendelKeyBinding binding in bindings)
         {
             EnableBinding(binding, enable);
         }

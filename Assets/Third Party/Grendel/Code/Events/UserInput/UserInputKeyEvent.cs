@@ -11,9 +11,9 @@ public class UserInputKeyEvent : EventBase
     }
     
     public readonly TYPE Type;
-    public readonly UserInput.KeyBinding KeyBind;
+    public readonly GrendelKeyBinding KeyBind;
     
-    public UserInputKeyEvent(UserInputKeyEvent.TYPE inputType, UserInput.KeyBinding bind, Vector3 location, object sender) : base(location, sender)
+    public UserInputKeyEvent(UserInputKeyEvent.TYPE inputType, GrendelKeyBinding bind, Vector3 location, object sender) : base(location, sender)
     {
         Type = inputType;
         KeyBind = bind;

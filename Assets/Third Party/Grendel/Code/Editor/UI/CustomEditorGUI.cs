@@ -167,12 +167,12 @@ namespace GrendelEditor.UI
         /// <param name='mouseBinder'>
         /// If set to <c>true</c> mouse binder.
         /// </param>
-        public static bool KeyBindButtonLayout(float buttonWidth, float buttonHeight, UserInput.KeyBinding binding, bool mouseBinder)
+        public static bool KeyBindButtonLayout(float buttonWidth, float buttonHeight, GrendelKeyBinding binding, bool mouseBinder)
         {
             return KeyBindButton(Vector2.zero, buttonWidth, buttonHeight, binding, true);
         }
 
-        private static bool KeyBindButton(Vector2 position, float buttonWidth, float buttonHeight, UserInput.KeyBinding binding, bool isLayout)
+        private static bool KeyBindButton(Vector2 position, float buttonWidth, float buttonHeight, GrendelKeyBinding binding, bool isLayout)
         {
             Rect controlRect = new Rect(position.x, position.y, buttonWidth, buttonHeight);
 

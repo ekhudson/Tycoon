@@ -6,8 +6,8 @@ using UnityEditor;
 
 using GrendelEditor.UI;
 
-[CustomEditor(typeof(UserInput))]
-public class UserInputEditor : GrendelEditor<UserInput>
+[CustomEditor(typeof(TycoonUserInput), true)]
+public class UserInputEditor : GrendelEditor<TycoonUserInput>
 {
     private const float kLabelWidth = 64f;
     private const float kButtonWidth = 128f;
@@ -15,7 +15,7 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
     private void OnEnable()
     {
-        Target.GatherKeyBindings();
+        Target.GatherKeyBindings(Target.GetType());
     }
 
     public override void OnInspectorGUI()
@@ -26,7 +26,7 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
         bool changed = false;
 
-        foreach(UserInput.KeyBinding binding in Target.KeyBindings)
+        foreach(GrendelKeyBinding binding in Target.KeyBindings)
         {
             Undo.CreateSnapshot();
             changed = false;
@@ -60,25 +60,25 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
                      EditorGUI.BeginChangeCheck();
 
-                        if (binding.MouseButton == UserInput.MouseButtons.None)
+                        if (binding.MouseButton == GrendelKeyBinding.MouseButtons.None)
                         {
                             GUI.color = Color.grey;
                         }
 
                         EditorGUILayout.PrefixLabel("Mouse:");
-                        binding.MouseButton = (UserInput.MouseButtons)EditorGUILayout.EnumPopup(binding.MouseButton);
+                        binding.MouseButton = (GrendelKeyBinding.MouseButtons)EditorGUILayout.EnumPopup(binding.MouseButton);
 
                          GUI.color = Color.white;
 
                         GUILayout.FlexibleSpace();
 
-                        if (binding.AltMouseButton == UserInput.MouseButtons.None)
+                        if (binding.AltMouseButton == GrendelKeyBinding.MouseButtons.None)
                         {
                             GUI.color = Color.grey;
                         }
 
                         EditorGUILayout.PrefixLabel("Alt Mouse:");
-                        binding.AltMouseButton = (UserInput.MouseButtons)EditorGUILayout.EnumPopup( binding.AltMouseButton);
+                        binding.AltMouseButton = (GrendelKeyBinding.MouseButtons)EditorGUILayout.EnumPopup( binding.AltMouseButton);
 
                          GUI.color = Color.white;
 

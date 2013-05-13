@@ -4,6 +4,10 @@ using System.Collections;
 public class InteractionZone : TriggerVolume
 {
     public string MessageOnEnter = string.Empty;
+    public bool ActivateOnUse01 = true;
+    public bool ActivateOnUse02 = true;
+    public bool ActivateOnUse03 = true;
+    public GameObject[] ActivateOnUse;
 
     private Vector3 mScreenPosition;
 
@@ -29,21 +33,29 @@ public class InteractionZone : TriggerVolume
         }
     }
 
-    public void InputHandler(object sender, UserInputKeyEvent evt)
+    public virtual void Activate()
     {
-        if (!collider.bounds.Contains(TycoonPlayer.Instance.transform.position))
+        foreach(GameObject obj in ActivateOnUse)
+        {
+            obj.SendMessage("Activate");
+        }
+    }
+
+    public virtual void InputHandler(object sender, UserInputKeyEvent evt)
+    {
+        if (!collider.bounds.Intersects(TycoonPlayer.Instance.collider.bounds))
         {
             return;
         }
 
-        if(evt.KeyBind == UserInput.Instance.MoveUp && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
+        if(evt.KeyBind == TycoonUserInput.Instance.UseKey01 && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN) && ActivateOnUse01)
         {
-
+            Activate();
         }
 
-        if(evt.KeyBind == UserInput.Instance.MoveDown && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
+        if(evt.KeyBind == TycoonUserInput.Instance.UseKey02 && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN) && ActivateOnUse02)
         {
-
+            Activate();
         }
     }
 }

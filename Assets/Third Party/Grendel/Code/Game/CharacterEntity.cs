@@ -18,6 +18,18 @@ public class CharacterEntity : Entity
         }
     }
 
+    public Vector3 Velocity
+    {
+        get
+        {
+            return mCurrentMove;
+        }
+        set
+        {
+            mCurrentMove = value;
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();

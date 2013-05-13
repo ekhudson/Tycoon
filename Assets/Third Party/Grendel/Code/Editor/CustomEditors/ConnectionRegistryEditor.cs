@@ -85,7 +85,12 @@ public class ConnectionRegistryEditor : GrendelEditor<ConnectionRegistry>
 	
 	public static void DrawConnectionsForObject(EditorObject editorObject)
 	{		
-		foreach(EditorObjectConnection connection in ConnectionRegistry.DesignInstance.Registry)
+        if (ConnectionRegistry.DesignInstance == null)
+        {
+            return;
+        }
+
+        foreach(EditorObjectConnection connection in ConnectionRegistry.DesignInstance.Registry)
 		{
 			if (connection.Caller == editorObject)
 			{				
