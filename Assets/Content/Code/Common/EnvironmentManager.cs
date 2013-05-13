@@ -22,6 +22,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
     private TimeOfDay mNextTimeOfDay;
 
     public TimeSpan CurrentTime = new TimeSpan(1,0,0);
+    public GameObject Sky;
 
     private const float kDayLength = 24f; //24 hours, naturally
 
@@ -110,7 +111,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 
     }
 
-
     // Use this for initialization
     void Start ()
     {
@@ -138,6 +138,9 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
                 mNextTimeOfDay = TimesOfDay[i + 1];
             }
         }
+
+
+        Sky.transform.position = new Vector3(TycoonMainCamera.Instance.transform.position.x, TycoonMainCamera.Instance.transform.position.y, Sky.transform.position.z);
 
         SkyPlane.renderer.sharedMaterial.color = Color.Lerp(mCurrentTimeOfDay.SkyColor, mNextTimeOfDay.SkyColor, ( (CurrentTime.Hours - mCurrentTimeOfDay.TimeAsFloat) / (mNextTimeOfDay.TimeAsFloat - mCurrentTimeOfDay.TimeAsFloat) ));
         SkyLight.light.color = SkyPlane.renderer.sharedMaterial.color;
