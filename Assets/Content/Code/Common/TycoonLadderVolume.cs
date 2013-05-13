@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class TycoonLadderVolume : MonoBehaviour
+public class TycoonLadderVolume : UsableObject
 {
-    public void Activate()
+    public override void Activate()
     {
         Vector3 pos = TycoonPlayer.Instance.transform.position;
         pos.z = collider.bounds.center.z;

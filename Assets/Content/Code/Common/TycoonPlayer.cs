@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TycoonPlayer : Singleton<TycoonPlayer>
 {
@@ -11,6 +12,15 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
     protected CharacterEntity mController;
 
     private Collider mClimbingVolume;
+
+    private List<string> mMessages = new List<string>();
+
+
+    //Message Box
+    private Vector3 mScreenPosition = Vector3.zero;
+    private const float kMessageBoxWidth = 96f;
+    private const float kMessageBoxHeight = 32f;
+    private const float kMessageBoxHoverHeight = 32f;
 
     public enum PlayerStates
     {
@@ -30,6 +40,14 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
         }
     }
 
+    public void AddMessage(string message)
+    {
+        if (!mMessages.Contains(message))
+        {
+            mMessages.Add(message);
+        }
+    }
+
     protected void Start()
     {
         EventManager.Instance.AddHandler<UserInputKeyEvent>(InputHandler);
@@ -41,6 +59,25 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
         {
             PlayerData.PlayerInventory = new TycoonInventory();
         }
+    }
+
+    private void OnGUI()
+    {
+        mScreenPosition = Camera.main.WorldToScreenPoint(collider.bounds.center + new Vector3(0,collider.bounds.extents.y, 0));
+        mScreenPosition.y = (Screen.height - mScreenPosition.y) - kMessageBoxHoverHeight;
+        mScreenPosition.x +=  -(kMessageBoxWidth * 0.5f);
+        
+        Rect rect = new Rect(mScreenPosition.x, mScreenPosition.y, kMessageBoxWidth,kMessageBoxHeight);
+        GUILayout.BeginArea(rect);
+
+        foreach(string message in mMessages)
+        {
+            GUILayout.Label(message, GUI.skin.button);
+        }
+
+        GUILayout.EndArea();
+
+        mMessages.Clear();
     }
 
     protected void Update()
