@@ -9,17 +9,16 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
     public TycoonPlayerData PlayerData;
 
     protected Vector3 mTarget = Vector3.zero;
-    protected CharacterEntity mController;
+    protected TycoonEntity mController;
 
     private Collider mClimbingVolume;
 
     private List<string> mMessages = new List<string>();
 
-
     //Message Box
     private Vector3 mScreenPosition = Vector3.zero;
     private const float kMessageBoxWidth = 96f;
-    private const float kMessageBoxHeight = 32f;
+    private const float kMessageBoxHeight = 48f;
     private const float kMessageBoxHoverHeight = 32f;
 
     public enum PlayerStates
@@ -40,6 +39,14 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
         }
     }
 
+    public TycoonEntity GetEntity
+    {
+        get
+        {
+            return mController;
+        }
+    }
+
     public void AddMessage(string message)
     {
         if (!mMessages.Contains(message))
@@ -51,7 +58,7 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
     protected void Start()
     {
         EventManager.Instance.AddHandler<UserInputKeyEvent>(InputHandler);
-        mController = GetComponent<CharacterEntity>();
+        mController = GetComponent<TycoonEntity>();
 
         PlayerData.BankAmount = PlayerData.StartingBankAmount;
 
@@ -61,23 +68,47 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
         }
     }
 
+    //TODO: Move all this stuff to the TycoonEntity
     private void OnGUI()
     {
         mScreenPosition = Camera.main.WorldToScreenPoint(collider.bounds.center + new Vector3(0,collider.bounds.extents.y, 0));
-        mScreenPosition.y = (Screen.height - mScreenPosition.y) - kMessageBoxHoverHeight;
+        mScreenPosition.y = (Screen.height - mScreenPosition.y) - (kMessageBoxHoverHeight + kMessageBoxHeight);
         mScreenPosition.x +=  -(kMessageBoxWidth * 0.5f);
         
         Rect rect = new Rect(mScreenPosition.x, mScreenPosition.y, kMessageBoxWidth,kMessageBoxHeight);
         GUILayout.BeginArea(rect);
 
-        foreach(string message in mMessages)
+        if(mController.State == TycoonEntity.TycoonEntityStates.USING)
         {
-            GUILayout.Label(message, GUI.skin.button);
+            GUILayout.Label( mController.CurrentUsingObject.UsingMessage, GUI.skin.button);
+
+            Rect progBarRect = GUILayoutUtility.GetLastRect();
+
+            progBarRect.width = progBarRect.width * (Time.realtimeSinceStartup / (mController.UseStartTime + mController.CurrentUsingObject.UseTime));
+
+            GUI.color = Color.yellow;
+
+            GUI.Box(progBarRect, string.Empty, GUI.skin.button);
+
+            GUI.color = Color.white;
+
+            GUILayout.Label( mController.CurrentUsingObject.UsingMessage, GUI.skin.button);
+
+        }
+        else
+        {
+            foreach(string message in mMessages)
+            {
+                GUILayout.Label(message, GUI.skin.button);
+            }
         }
 
         GUILayout.EndArea();
 
-        mMessages.Clear();
+        if (Event.current.type == EventType.repaint)
+        {
+            mMessages.Clear();
+        }
     }
 
     protected void Update()
@@ -92,21 +123,17 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
         mTarget = Vector3.zero;
 
 
-        switch(mPlayerState)
+        switch(mController.State)
         {
-            case PlayerStates.IDLE:
-    
-
+            case TycoonEntity.TycoonEntityStates.IDLE:
 
             break;
     
-            case PlayerStates.MOVING:
-    
-
+            case TycoonEntity.TycoonEntityStates.MOVING:
     
             break;
     
-            case PlayerStates.CLIMBING:
+            case TycoonEntity.TycoonEntityStates.CLIMBING:
 
                 if (mClimbingVolume == null || !mClimbingVolume.bounds.Contains(collider.bounds.center - new Vector3(0,collider.bounds.extents.y, 0)))
                 {
@@ -115,7 +142,7 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
     
             break;
 
-            case PlayerStates.WORKING:
+            case TycoonEntity.TycoonEntityStates.USING:
 
             break;
         }
@@ -128,7 +155,7 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
 
     public void InputHandler(object sender, UserInputKeyEvent evt)
     {
-        if (mPlayerState == PlayerStates.IDLE || mPlayerState == PlayerStates.MOVING)
+        if (mController.State == TycoonEntity.TycoonEntityStates.IDLE || mController.State == TycoonEntity.TycoonEntityStates.MOVING)
         {
 
             if(evt.KeyBind == TycoonUserInput.Instance.MoveLeft && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
@@ -141,7 +168,7 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
                 mTarget += (new Vector3(1, 0, 0));
             }
         }
-        else if (mPlayerState == PlayerStates.CLIMBING)
+        else if (mController.State == TycoonEntity.TycoonEntityStates.CLIMBING)
         {
 
             if(evt.KeyBind == TycoonUserInput.Instance.UseKey01 && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
@@ -161,12 +188,12 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
         mClimbingVolume = climbingVolume;
         rigidbody.useGravity = false;
         rigidbody.velocity = Vector3.zero;
-        SetState(PlayerStates.CLIMBING);
+        mController.SetState(TycoonEntity.TycoonEntityStates.CLIMBING);
     }
 
     private void StopClimbing()
     {
-        SetState(PlayerStates.IDLE);
+        mController.SetState(TycoonEntity.TycoonEntityStates.IDLE);
         Vector3 pos = transform.position;
         Ray ray = new Ray(transform.position, Vector3.forward);
         RaycastHit hit = new RaycastHit();

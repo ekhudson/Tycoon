@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class TycoonLadderVolume : UsableObject
+public class TycoonLadderVolume : UseableObject
 {
-    public override void Activate()
+    public override bool Activate(TycoonEntity activator)
     {
+        //base.Activate(activator);
+
         Vector3 pos = TycoonPlayer.Instance.transform.position;
         pos.z = collider.bounds.center.z;
 
@@ -16,5 +18,7 @@ public class TycoonLadderVolume : UsableObject
 
         TycoonPlayer.Instance.transform.position = pos;
         TycoonPlayer.Instance.StartClimbing(gameObject.collider);
+
+        return false;
     }
 }

@@ -3,13 +3,9 @@ using System.Collections;
 
 public class InteractionZone : TriggerVolume
 {
-    public string MessageOnEnter = string.Empty;
-    //public bool ActivateOnUse01 = true;
-    //public bool ActivateOnUse02 = true;
-    //public bool ActivateOnUse03 = true;
-    public UsableObject[] ActivateOnUse01;
-    public UsableObject[] ActivateOnUse02;
-    public UsableObject[] ActivateOnUse03;
+    public UseableObject[] ActivateOnUse01;
+    public UseableObject[] ActivateOnUse02;
+    public UseableObject[] ActivateOnUse03;
 
     protected override void Start()
     {
@@ -17,22 +13,13 @@ public class InteractionZone : TriggerVolume
         base.Start();
     }
 
-    public void OnGUI()
+    public void Update()
     {
-        if(ObjectList.Contains(TycoonPlayer.Instance.gameObject.collider))
+        if(ObjectList.Contains(TycoonPlayer.Instance.gameObject.collider) &&
+            TycoonPlayer.Instance.GetState != TycoonPlayer.PlayerStates.WORKING &&
+            TycoonPlayer.Instance.GetState != TycoonPlayer.PlayerStates.CLIMBING)
         {
-//            mScreenPosition = Camera.main.WorldToScreenPoint(collider.bounds.center + new Vector3(0,collider.bounds.extents.y, 0));
-//            mScreenPosition.y = (Screen.height - mScreenPosition.y) - kMessageBoxHoverHeight;
-//            mScreenPosition.x +=  -(kMessageBoxWidth * 0.5f);
-//
-//            Rect rect = new Rect(mScreenPosition.x, mScreenPosition.y, kMessageBoxWidth,kMessageBoxHeight);
-//            GUILayout.BeginArea(rect);
-//
-//            GUILayout.Label(MessageOnEnter, GUI.skin.button);
-//
-//            GUILayout.EndArea();
-
-            foreach(UsableObject obj in ActivateOnUse01)
+            foreach(UseableObject obj in ActivateOnUse01)
             {
                 if (obj.PreuseMessage != null)
                 {
@@ -40,14 +27,14 @@ public class InteractionZone : TriggerVolume
                 }
             }
 
-            foreach(UsableObject obj in ActivateOnUse02)
+            foreach(UseableObject obj in ActivateOnUse02)
             {
                if (obj.PreuseMessage != null)
                 {
                     TycoonPlayer.Instance.AddMessage(obj.PreuseMessage);
                 }
             }
-            foreach(UsableObject obj in ActivateOnUse03)
+            foreach(UseableObject obj in ActivateOnUse03)
             {
                if (obj.PreuseMessage != null)
                 {
@@ -57,11 +44,12 @@ public class InteractionZone : TriggerVolume
         }
     }
 
-    public virtual void Activate(UsableObject[] objectsToActivate)
+    public virtual void Activate(UseableObject[] objectsToActivate, TycoonEntity activator)
     {
-        foreach(UsableObject obj in objectsToActivate)
+        foreach(UseableObject obj in objectsToActivate)
         {
-            obj.Activate();
+            //obj.Activate(activator);
+            activator.UseObject(obj);
         }
     }
 
@@ -74,12 +62,12 @@ public class InteractionZone : TriggerVolume
 
         if(evt.KeyBind == TycoonUserInput.Instance.UseKey01 && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN))
         {
-            Activate(ActivateOnUse01);
+            Activate(ActivateOnUse01, TycoonPlayer.Instance.GetEntity);
         }
 
         if(evt.KeyBind == TycoonUserInput.Instance.UseKey02 && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN))
         {
-            Activate(ActivateOnUse02);
+            Activate(ActivateOnUse02, TycoonPlayer.Instance.GetEntity);
         }
     }
 }
