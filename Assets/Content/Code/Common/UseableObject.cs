@@ -42,10 +42,16 @@ public class UseableObject : MonoBehaviour
         return true;
     }
 
+    public virtual void OnUseComplete()
+    {
+
+    }
+
     IEnumerator Use()
     {
         mState = UseableObjectStates.INUSE;
         yield return new WaitForSeconds(UseTime);
+        OnUseComplete();
         mState = UseableObjectStates.ENABLED;
         EventManager.Instance.Post(new UseableObjectEvent(mCurrentActivator, mState, this));
     }

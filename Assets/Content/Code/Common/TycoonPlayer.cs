@@ -84,16 +84,13 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
 
             Rect progBarRect = GUILayoutUtility.GetLastRect();
 
-            progBarRect.width = progBarRect.width * (Time.realtimeSinceStartup / (mController.UseStartTime + mController.CurrentUsingObject.UseTime));
+            progBarRect.width = progBarRect.width * ( (Time.realtimeSinceStartup - mController.UseStartTime) / mController.CurrentUsingObject.UseTime);
 
             GUI.color = Color.yellow;
 
             GUI.Box(progBarRect, string.Empty, GUI.skin.button);
 
             GUI.color = Color.white;
-
-            GUILayout.Label( mController.CurrentUsingObject.UsingMessage, GUI.skin.button);
-
         }
         else
         {
@@ -170,7 +167,6 @@ public class TycoonPlayer : Singleton<TycoonPlayer>
         }
         else if (mController.State == TycoonEntity.TycoonEntityStates.CLIMBING)
         {
-
             if(evt.KeyBind == TycoonUserInput.Instance.UseKey01 && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
             {
                 mTarget = (Vector3.up * ClimbSpeed);

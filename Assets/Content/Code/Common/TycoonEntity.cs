@@ -50,9 +50,13 @@ public class TycoonEntity : CharacterEntity
         {
             case TycoonEntityStates.IDLE:
 
+                mRigidbody.useGravity = true;
+
             break;
 
             case TycoonEntityStates.MOVING:
+
+                mRigidbody.useGravity = false;
 
             break;
 

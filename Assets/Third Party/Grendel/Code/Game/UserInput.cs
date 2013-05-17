@@ -108,7 +108,7 @@ public class UserInput<T> : Singleton<T> where T  : MonoBehaviour
         }
     }
 
-    //Store all the GrendelKeyBindings for easy referencing
+    //Store all the KeyBindings for easy referencing
     private void StoreGrendelKeyBindings()
     {
         foreach(GrendelKeyBinding binding in KeyBindings)

@@ -16,8 +16,8 @@ public class InteractionZone : TriggerVolume
     public void Update()
     {
         if(ObjectList.Contains(TycoonPlayer.Instance.gameObject.collider) &&
-            TycoonPlayer.Instance.GetState != TycoonPlayer.PlayerStates.WORKING &&
-            TycoonPlayer.Instance.GetState != TycoonPlayer.PlayerStates.CLIMBING)
+            TycoonPlayer.Instance.GetEntity.State != TycoonEntity.TycoonEntityStates.CLIMBING &&
+            TycoonPlayer.Instance.GetEntity.State != TycoonEntity.TycoonEntityStates.USING)
         {
             foreach(UseableObject obj in ActivateOnUse01)
             {
@@ -48,7 +48,6 @@ public class InteractionZone : TriggerVolume
     {
         foreach(UseableObject obj in objectsToActivate)
         {
-            //obj.Activate(activator);
             activator.UseObject(obj);
         }
     }

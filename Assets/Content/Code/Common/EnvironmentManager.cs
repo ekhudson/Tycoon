@@ -26,6 +26,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
     public GameObject Sky;
 
     private const float kDayLength = 24f; //24 hours, naturally
+    private const float kBaseHundredConverter = 1.666666666666667f;
 
     [System.Serializable]
     public class TimeSpan
@@ -41,9 +42,9 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
             mSeconds = seconds;
         }
 
-        public float GetHoursAndMinutes()
+        public float GetHoursAndMinutes(bool convertToBaseHundred)
         {
-            return mHours + (mMinutes * 0.01f);
+            return convertToBaseHundred ? mHours + ((mMinutes * 0.01f) * kBaseHundredConverter): mHours + (mMinutes * 0.01f);
         }
 
         public void AddSeconds(float seconds)
@@ -129,7 +130,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
         //CurrentTime += (Time.deltaTime * RealtimeScale);
         CurrentTime.AddSeconds(Time.deltaTime * RealtimeScale);
 
-        if (CurrentTime.Hours >= kDayLength)
+        if (CurrentTime.GetHoursAndMinutes(true) >= kDayLength)
         {
             CurrentTime = new TimeSpan(0,0,0);
             mCurrentTimeOfDay = TimesOfDay[0];
@@ -138,7 +139,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 
         for (int i = 0; i < TimesOfDay.Count; i++)
         {
-            if(CurrentTime.Hours > TimesOfDay[i].TimeAsFloat)
+            if(CurrentTime.GetHoursAndMinutes(true) > TimesOfDay[i].TimeAsFloat)
             {
                 mCurrentTimeOfDay = TimesOfDay[i];
                 mNextTimeOfDay = TimesOfDay[i + 1];
@@ -149,8 +150,9 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
         Sky.transform.position = new Vector3(TycoonMainCamera.Instance.transform.position.x, TycoonMainCamera.Instance.transform.position.y, Sky.transform.position.z);
 
         //TODO: PRecalc this lerp so we aren't doing it twice
-        SkyPlane.renderer.sharedMaterial.color = Color.Lerp(mCurrentTimeOfDay.SkyColor, mNextTimeOfDay.SkyColor, ( (CurrentTime.GetHoursAndMinutes() - mCurrentTimeOfDay.TimeAsFloat) / (mNextTimeOfDay.TimeAsFloat - mCurrentTimeOfDay.TimeAsFloat) ));
-        SkyLight.light.color = Color.Lerp(mCurrentTimeOfDay.SunColor, mNextTimeOfDay.SunColor, ( (CurrentTime.GetHoursAndMinutes() - mCurrentTimeOfDay.TimeAsFloat) / (mNextTimeOfDay.TimeAsFloat - mCurrentTimeOfDay.TimeAsFloat) ));
+        SkyPlane.renderer.sharedMaterial.color = Color.Lerp(mCurrentTimeOfDay.SkyColor, mNextTimeOfDay.SkyColor,( (CurrentTime.GetHoursAndMinutes(true) - mCurrentTimeOfDay.TimeAsFloat) / (mNextTimeOfDay.TimeAsFloat - mCurrentTimeOfDay.TimeAsFloat) ) );
+        
+        SkyLight.light.color = Color.Lerp(mCurrentTimeOfDay.SunColor, mNextTimeOfDay.SunColor, ( (CurrentTime.GetHoursAndMinutes(true) - mCurrentTimeOfDay.TimeAsFloat) / (mNextTimeOfDay.TimeAsFloat - mCurrentTimeOfDay.TimeAsFloat) ));
         SkyLight.light.color = Color.Lerp(SkyLight.light.color, Color.black, Mathf.Clamp(TycoonPlayer.Instance.transform.position.y / TycoonMainCamera.Instance.MaxDepth, 0f, 1f));
     }
 }

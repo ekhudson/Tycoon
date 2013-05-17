@@ -10,6 +10,11 @@ public class TycoonDiggingZone : UseableObject
     {
         base.Activate(activator);
 
+        return true;
+    }
+
+    public override void OnUseComplete()
+    {
         float yAmt = transform.collider.bounds.extents.y * 2;
 
         foreach(Transform obj in ObjectsToMove)
@@ -30,7 +35,5 @@ public class TycoonDiggingZone : UseableObject
                 //obj.renderer.material.mainTextureOffset += new Vector2(0, (obj.localScale.y / currentYScale) - 1);
             }
         }
-
-        return true;
     }
 }

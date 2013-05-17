@@ -1,3 +1,4 @@
+[Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 
@@ -7,5 +8,7 @@
 *.sln
 *.pidb
 *.userprefs
+
+Library/*
 
 
