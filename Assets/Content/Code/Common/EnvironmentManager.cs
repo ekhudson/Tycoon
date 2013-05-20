@@ -151,7 +151,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 
         //TODO: PRecalc this lerp so we aren't doing it twice
         SkyPlane.renderer.sharedMaterial.color = Color.Lerp(mCurrentTimeOfDay.SkyColor, mNextTimeOfDay.SkyColor,( (CurrentTime.GetHoursAndMinutes(true) - mCurrentTimeOfDay.TimeAsFloat) / (mNextTimeOfDay.TimeAsFloat - mCurrentTimeOfDay.TimeAsFloat) ) );
-        
+
         SkyLight.light.color = Color.Lerp(mCurrentTimeOfDay.SunColor, mNextTimeOfDay.SunColor, ( (CurrentTime.GetHoursAndMinutes(true) - mCurrentTimeOfDay.TimeAsFloat) / (mNextTimeOfDay.TimeAsFloat - mCurrentTimeOfDay.TimeAsFloat) ));
         SkyLight.light.color = Color.Lerp(SkyLight.light.color, Color.black, Mathf.Clamp(TycoonPlayer.Instance.transform.position.y / TycoonMainCamera.Instance.MaxDepth, 0f, 1f));
     }

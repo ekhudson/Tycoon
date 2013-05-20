@@ -6,6 +6,12 @@ public class TycoonDiggingZone : UseableObject
     public Transform[] ObjectsToMove;
     public Transform[] ObjectsToScale;
 
+    public GameObject[] RockPrefabs;
+    public int RubbleMinAmount = 6;
+    public int RubbleMaxAmount = 9;
+    public float RubbleMinSize = 0.15f;
+    public float RubbleMaxSize = 0.45f;
+
     public override bool Activate(TycoonEntity activator)
     {
         base.Activate(activator);
@@ -32,8 +38,22 @@ public class TycoonDiggingZone : UseableObject
             if (obj.renderer != null)
             {
                 obj.renderer.material.mainTextureScale += new Vector2(0, 0.25f);
-                //obj.renderer.material.mainTextureOffset += new Vector2(0, (obj.localScale.y / currentYScale) - 1);
             }
         }
+
+        int rubbleAmount = Random.Range(RubbleMinAmount, RubbleMaxAmount);
+
+
+        for(int i = 0; i <= rubbleAmount; i++)
+        {
+            float scale = Random.Range(RubbleMinSize, RubbleMaxSize);
+            Vector3 position = new Vector3(Random.Range( (renderer.bounds.center.x - renderer.bounds.extents.x) + scale, (renderer.bounds.center.x + renderer.bounds.extents.x) - scale),
+                                           Random.Range(renderer.bounds.center.y + scale, renderer.bounds.center.y + renderer.bounds.extents.y),
+                                           renderer.bounds.center.z);
+
+            GameObject rubble = GameObject.Instantiate(RockPrefabs[Random.Range(0, RockPrefabs.Length)], position, Quaternion.identity) as GameObject;
+            rubble.transform.localScale = new Vector3(scale,scale,scale);
+        }
+
     }
 }
