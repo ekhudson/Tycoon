@@ -35,8 +35,7 @@ public class MouseInteractableObject : UseableObject
 
     public override void OnUseComplete()
     {
-        TycoonPlayer.Instance.PlayerData.BankAmount += 0.25f;
-        Destroy(gameObject);
+
     }
 
 }

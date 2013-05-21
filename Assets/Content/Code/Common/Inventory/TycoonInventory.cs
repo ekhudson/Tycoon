@@ -20,7 +20,7 @@ public class TycoonInventory
         }
     }
 
-    private int mInventorySlots = 10; //how many slots this inventory has
+    public int InventorySlots = 10; //how many slots this inventory has
     private Dictionary<TycoonItem, List<TycoonInventorySlot>> mItemDictionary = new Dictionary<TycoonItem, List<TycoonInventorySlot>>();
 
     public Dictionary<TycoonItem, List<TycoonInventorySlot>> GetInventory
@@ -35,7 +35,7 @@ public class TycoonInventory
     {
         get
         {
-            return mInventorySlots;
+            return InventorySlots;
         }
     }
 
