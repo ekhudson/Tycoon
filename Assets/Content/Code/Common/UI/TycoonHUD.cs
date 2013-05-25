@@ -2,9 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TycoonHUD : MonoBehaviour
+public class TycoonHUD : Singleton<TycoonHUD>
 {
     public TycoonItem Shovel;
+    public GUISkin TycoonHUDSkin;
     private const float kTopBarHeight = 32f;
     private const int kInventoryColumnAmount = 5;
 

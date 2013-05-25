@@ -21,15 +21,22 @@ public class TycoonInventorySlotGUI
 
         if (slot == null)
         {
-            GUI.Box(rect, string.Empty);
+            GUI.Box(rect, string.Empty, TycoonHUD.Instance.TycoonHUDSkin.customStyles[1]);
             GUILayout.EndVertical();
             return;
         }
 
-        if(GUI.Toggle(rect, CurrentActiveSlot == slot, slot.Item.Icon, GUI.skin.button))
+        if (CurrentActiveSlot == slot)
+        {
+            GUI.color = GrendelColor.CustomAlpha(Color.white, 0.65f);
+        }
+
+        if(GUI.Toggle(rect, CurrentActiveSlot == slot, slot.Item.Icon, TycoonHUD.Instance.TycoonHUDSkin.customStyles[0]))
         {
             CurrentActiveSlot = slot;
         }
+
+        GUI.color = Color.white;
 
         if (slot.Quantity > 1)
         {
